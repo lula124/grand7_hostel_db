@@ -1,0 +1,60 @@
+-- Sample Data for Grand 7 Luxury Girls Hostel
+
+-- Wardens
+INSERT INTO Warden (Name, Gender) VALUES
+('Anjali Mehra', 'Female'),
+('Ritu Singh', 'Female');
+
+INSERT INTO Warden_Contact (Warden_ID, Contact_number) VALUES
+(1, '9876543210'),
+(2, '9123456780');
+
+-- Rooms
+INSERT INTO Room (Room_number, Room_type, Floor, Capacity, Current_occupancy, Status, Warden_ID) VALUES
+('101', 'Single', 1, 1, 0, 'Available', 1),
+('102', 'Double', 1, 2, 1, 'Occupied', 1),
+('201', 'Triple', 2, 3, 2, 'Occupied', 2),
+('202', 'Single', 2, 1, 0, 'Available', 2);
+
+-- Students
+INSERT INTO Student (Name, Gender, Date_of_Birth, Address, Admission_date, Room_ID) VALUES
+('Priya Sharma', 'Female', '2003-05-21', '123 Main Street', '2024-01-10', 102),
+('Neha Gupta', 'Female', '2002-11-12', '456 Park Lane', '2024-01-15', 201);
+
+INSERT INTO Student_Contact (Student_ID, Contact_number) VALUES
+(1, '9000012345'),
+(2, '9000023456');
+
+-- Guardians
+INSERT INTO Guardian (Name, Gender, Address) VALUES
+('Rajesh Sharma', 'Male', '123 Main Street'),
+('Sunita Gupta', 'Female', '456 Park Lane');
+
+INSERT INTO Guardian_Contact (Guardian_ID, Contact_number) VALUES
+(1, '8000012345'),
+(2, '8000023456');
+
+-- Student-Guardian Relationships
+INSERT INTO StudentGuardian (Student_ID, Guardian_ID, Relationship) VALUES
+(1, 1, 'Father'),
+(2, 2, 'Mother');
+
+-- Leave Requests
+INSERT INTO Leave_Request (Student_ID, From_date, To_date, Reason, Status) VALUES
+(1, '2025-05-10', '2025-05-15', 'Family Function', 'Pending'),
+(2, '2025-06-01', '2025-06-03', 'Medical', 'Approved');
+
+-- Hostel Fees
+INSERT INTO Hostel_Fee (Student_ID, Amount, Due_date, Payment_date, Payment_Status) VALUES
+(1, 10000.00, '2025-06-01', NULL, 'Pending'),
+(2, 10000.00, '2025-06-01', '2025-05-20', 'Paid');
+
+-- Transportation Usage
+INSERT INTO Transportation_Usage (Student_ID, Pickup_point, Dropoff_point) VALUES
+(1, 'Hostel Main Gate', 'City Center'),
+(2, 'Hostel Main Gate', 'Railway Station');
+
+-- Users (for login)
+INSERT INTO users (name, email, password, role) VALUES
+('Admin', 'admin@hostel.com', '$2y$10$wH6Qv2l6fFZK1Yv8ZtL1EO9OZQXvZ/1Yy5hMZtZb1y5hMZtZb1y5h', 'admin'), -- password: admin123
+('Priya Sharma', 'priya@hostel.com', '$2y$10$e0NR8Qw5hQw5hQw5hQw5hOe0NR8Qw5hQw5hQw5hQw5hQw5hQw5hQw', 'student'); -- password: priya123

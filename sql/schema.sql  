@@ -1,0 +1,115 @@
+-- Grand 7 Luxury Girls Hostel - Database Schema
+
+CREATE TABLE Warden (
+    Warden_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Gender VARCHAR(10) NOT NULL CHECK (Gender IN ('Male', 'Female'))
+);
+
+CREATE TABLE Warden_Contact (
+    Warden_ID INT NOT NULL,
+    Contact_number VARCHAR(10) NOT NULL,
+    PRIMARY KEY (Warden_ID, Contact_number),
+    FOREIGN KEY (Warden_ID) REFERENCES Warden(Warden_ID)
+);
+
+CREATE TABLE Room (
+    Room_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Room_number VARCHAR(5) NOT NULL UNIQUE,
+    Room_type VARCHAR(50) NOT NULL,
+    Floor INT NOT NULL CHECK (Floor > 0),
+    Capacity INT NOT NULL CHECK (Capacity > 0),
+    Current_occupancy INT NOT NULL CHECK (Current_occupancy >= 0),
+    Status VARCHAR(20) NOT NULL CHECK (Status IN ('Available', 'Occupied', 'Maintenance')),
+    Warden_ID INT,
+    FOREIGN KEY (Warden_ID) REFERENCES Warden(Warden_ID)
+);
+
+CREATE TABLE Student (
+    Student_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Gender VARCHAR(10) NOT NULL CHECK (Gender IN ('Male', 'Female')),
+    Date_of_Birth DATE NOT NULL,
+    Address VARCHAR(255) NOT NULL,
+    Admission_date DATE NOT NULL,
+    Room_ID INT NOT NULL,
+    FOREIGN KEY (Room_ID) REFERENCES Room(Room_ID)
+);
+
+CREATE TABLE Student_Contact (
+    Student_ID INT NOT NULL,
+    Contact_number VARCHAR(10) NOT NULL,
+    PRIMARY KEY (Student_ID, Contact_number),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID)
+);
+
+CREATE TABLE Guardian (
+    Guardian_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Gender VARCHAR(10) NOT NULL CHECK (Gender IN ('Male', 'Female')),
+    Address VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Guardian_Contact (
+    Guardian_ID INT NOT NULL,
+    Contact_number VARCHAR(10) NOT NULL,
+    PRIMARY KEY (Guardian_ID, Contact_number),
+    FOREIGN KEY (Guardian_ID) REFERENCES Guardian(Guardian_ID)
+);
+
+CREATE TABLE StudentGuardian (
+    Student_ID INT NOT NULL,
+    Guardian_ID INT NOT NULL,
+    Relationship VARCHAR(50) NOT NULL,
+    PRIMARY KEY (Student_ID, Guardian_ID),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    FOREIGN KEY (Guardian_ID) REFERENCES Guardian(Guardian_ID)
+);
+
+CREATE TABLE Leave_Request (
+    Leave_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Student_ID INT NOT NULL,
+    From_date DATE NOT NULL,
+    To_date DATE NOT NULL,
+    Reason NVARCHAR(255) NOT NULL,
+    Status VARCHAR(20) NOT NULL CHECK (Status IN ('Pending', 'Approved', 'Rejected')),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID),
+    CONSTRAINT chk_ToDate_After_FromDate CHECK (To_date >= From_date)
+);
+
+CREATE TABLE Hostel_Fee (
+    Fee_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Student_ID INT NOT NULL,
+    Amount DECIMAL(10, 2) NOT NULL CHECK (Amount >= 0),
+    Due_date DATE NOT NULL,
+    Payment_date DATE NULL,
+    Payment_Status VARCHAR(20) NOT NULL CHECK (Payment_Status IN ('Paid', 'Pending', 'Overdue')),
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID)
+);
+
+CREATE TABLE Transportation_Usage (
+    Transportation_Usage_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Student_ID INT NOT NULL,
+    Pickup_point VARCHAR(100) NOT NULL,
+    Dropoff_point VARCHAR(100) NOT NULL,
+    FOREIGN KEY (Student_ID) REFERENCES Student(Student_ID)
+);
+
+-- Users table for authentication
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'student'
+);
+
+-- Stored Procedure Example
+DELIMITER //
+CREATE PROCEDURE sp_ApproveLeaveRequest(IN LeaveID INT)
+BEGIN
+    UPDATE Leave_Request
+    SET Status = 'Approved'
+    WHERE Leave_ID = LeaveID;
+END //
+DELIMITER ;

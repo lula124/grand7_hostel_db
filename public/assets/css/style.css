@@ -1,0 +1,63 @@
+/* General Styles */
+body {
+    background-color: #f6f8fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Card Customization */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    transition: transform 0.1s;
+}
+.card:hover {
+    transform: translateY(-3px) scale(1.01);
+}
+
+/* Table Styles */
+.table th, .table td {
+    vertical-align: middle !important;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.navbar {
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.03);
+}
+
+/* Buttons */
+.btn-primary, .btn-success, .btn-warning, .btn-danger {
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Footer */
+footer {
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 1rem;
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+    .navbar-nav {
+        text-align: center;
+    }
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Custom Badges */
+.badge {
+    font-size: 1em;
+    padding: 0.5em 1em;
+    border-radius: 12px;
+}

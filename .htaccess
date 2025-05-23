@@ -1,0 +1,15 @@
+# .htaccess for security and clean URLs
+
+# Prevent directory listing
+Options -Indexes
+
+# Deny access to config and src folders from the web
+RewriteEngine On
+RewriteRule ^config/ - [F,L]
+RewriteRule ^src/ - [F,L]
+
+# Redirect all requests to public/index.php if using a front controller pattern
+# Uncomment the following if you want all requests to go through index.php
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^ public/index.php [QSA,L]
